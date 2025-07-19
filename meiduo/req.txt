@@ -1,4 +1,4 @@
-django==4.2.21
+#django==4.2.21
 django_crontab
 django-cors-headers
 rest_framework_simplejwt
@@ -9,4 +9,5 @@ pillow
 celery
 ronglian_sms_sdk
 django-haystack
-elasticsearch
+mysqlclient
+#elasticsearch

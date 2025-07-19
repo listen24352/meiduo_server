@@ -50,7 +50,7 @@ def generic_detail_html(sku):
     # 3. 写入到指定文件
     import os
     from meiduo_mall import settings
-    file_path = os.path.join(os.path.dirname(settings.BASE_DIR), '/home/listen/Desktop/shop/front/goods/%s.html' % sku.id)
+    file_path = os.path.join(os.path.dirname(settings.BASE_DIR), '/home/leo/Desktop/meiduo_front/goods/%s.html' % sku.id)
 
     with open(file_path, 'w', encoding='utf-8') as f:
         f.write(detail_html_data)

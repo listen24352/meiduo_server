@@ -47,7 +47,7 @@ def generic_meiduo_index():
     import os
     # base_dir 的上一级
     # file_path = os.path.join(os.path.dirname(settings.BASE_DIR), 'front_end_pc/index.html')
-    file_path = '/home/ubuntu/shop/front/index.html'
+    file_path = '/home/leo/Desktop/meiduo_front/index.html'
 
     with open(file_path, 'w', encoding='utf-8') as f:
         f.write(index_html_data)

@@ -3,7 +3,7 @@ from apps.users.views import UsernameCountView, RegisterView, LoginView, LogoutV
 from apps.users.views import EmailView, EmailVerifyView, AddressCreateView, AddressView
 
 urlpatterns = {
-    path('username/<username:username>/count/', UsernameCountView.as_view()),
+    path('usernames/<str:username>/count/', UsernameCountView.as_view(), name='username_count'),
     # 注册
     path('register/', RegisterView.as_view()),
     # 登录

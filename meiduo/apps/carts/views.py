@@ -212,7 +212,7 @@ class CartsSimpleView(View):
                 }
         else:
             # 用户未登录
-            cart_str = request.COOKIES.GET('carts')
+            cart_str = request.COOKIES.get('carts')
             if cart_str:
                 cart_dict = pickle.loads(base64.b64decode(cart_str.encode()))
             else:

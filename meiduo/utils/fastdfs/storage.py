@@ -29,4 +29,4 @@ class MyStorage(Storage):
 
     def url(self, name):
         # return "http://192.168.154.133:8888/" + name
-        return "http://101.43.217.34:8888/" + name
+        return "http://47.92.126.69:8888/" + name

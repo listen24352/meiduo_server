@@ -1,2 +1,2 @@
 #!/bin/bash
-mysql -uleo -pmysql shop < goods_data.sql
+mysql -uleo -pmysql meiduo < goods_data.sql
