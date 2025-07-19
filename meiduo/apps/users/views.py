@@ -9,11 +9,25 @@ from django.contrib.auth import login  # 状态保持
 from django.contrib.auth import logout
 from utils.views import LoginRequiredMixin, LoginRequiredJSONMixin
 
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
-class UsernameCountView(View):
+
+class UsernameCountView(APIView):
+    """
+    获取指定用户名存在的数量
+    """
+
     def get(self, request, username):
         count = User.objects.filter(username=username).count()
-        return JsonResponse({'code': 0, 'count': count, 'errmsg': 'ok'})
+        data = {'code': 0, 'count': count, 'errmsg': 'ok'}
+        return Response(data)
+
+
+# class UsernameCountView(View):
+#     def get(self, request, username):
+#         count = User.objects.filter(username=username).count()
+#         return JsonResponse({'code': 0, 'count': count, 'errmsg': 'ok'})
 
 
 class RegisterView(View):
@@ -25,16 +39,16 @@ class RegisterView(View):
         username = body_dict.get('username')
         password = body_dict.get('password')
         password2 = body_dict.get('password2')
-        mobile = body_dict.get('mobile')
+        # mobile = body_dict.get('mobile')
         allow = body_dict.get('allow')
 
-        if not all([username, password, password2, mobile, allow]):
+        if not all([username, password, password2, allow]):
             return JsonResponse({'code': 400, 'errmsg': '参数不全'})
         if not re.match('[a-zA-Z_-]{5,20}', username):
             return JsonResponse({'code': 400, 'errmsg': '用户名不满足规则'})
         # user = User.objects.create(username=username, password=password, mobile=mobile)  密码不加密
         # create_user 密码加密
-        user = User.objects.create_user(username=username, password=password, mobile=mobile)
+        user = User.objects.create_user(username=username, password=password)
 
         login(request, user)  # 状态保持
 
@@ -85,7 +99,7 @@ class LogoutView(View):
         """
         405 前后端请求方法不一样
         WARNING base 146 Method Not Allowed (DELETE): /logout/
-        WARNING log 241 Method Not Allowed: /logout/
+        WARNING logs 241 Method Not Allowed: /logout/
         WARNING basehttp 212 "DELETE /logout/ HTTP/1.1" 405 0
         """
         # 删除session信息
@@ -233,7 +247,7 @@ class AddressView(LoginRequiredJSONMixin, View):
         # 3.返回响应
         return JsonResponse({'code': 0, 'errmsg': 'ok', 'addresses': address_list})
 
-    def put(self,request,id):
+    def put(self, request, id):
         """
         修改收货地址
         """
