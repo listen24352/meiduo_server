@@ -8,7 +8,7 @@ from rest_framework import viewsets, status, permissions, mixins
 from rest_framework.decorators import action  # 导入 action 装饰器，用于在视图集中定义自定义的动作。
 from rest_framework.response import Response  # 导入 Response 类，用于构建 RESTful 响应。
 from django.contrib.auth import login  # 导入 login 函数，用于在用户注册成功后自动登录用户。
-
+from drf_spectacular.utils import extend_schema
 from apps.users.serializers.register_serializers import RegisterSerializer
 from apps.users.models import User
 
@@ -26,7 +26,7 @@ class UserRegisterViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     serializer_class = RegisterSerializer
     # 允许任何用户访问该视图集的接口
     permission_classes = [permissions.AllowAny]
-
+    @extend_schema(responses=RegisterSerializer)
     @action(detail=False, methods=['GET'], url_path='check_username/(?P<username>[^/.]+)', url_name='check-username')
     def check_username(self, request, username=None):
         """

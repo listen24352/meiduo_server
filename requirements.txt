@@ -1,0 +1,14 @@
+#django==4.2.21
+django_crontab
+django-cors-headers
+rest_framework_simplejwt
+djangorestframework
+django_redis
+djangorestframework-simplejwt
+pillow
+celery
+ronglian_sms_sdk
+django-haystack
+mysqlclient
+#elasticsearch
+drf-spectacular

@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django_crontab',
     'rest_framework',
     'rest_framework_simplejwt',
-
+    'drf_spectacular',
+    'drf_spectacular_sidecar',
     'apps.users',
     'apps.verifications',
     'apps.goods',
@@ -253,6 +254,7 @@ AUTH_USER_MODEL = 'users.User'
 CORS_ALLOWED_ORIGINS = [
     # "http://www.meiduo.site:8000",  # 前端域名或端口
     "http://www.meiduo.site:8080",  # 前端域名或端口
+    'http://192.168.0.105:60000'
     # "http://127.0.0.1:8000"
 ]
 
@@ -301,11 +303,28 @@ ALIPAY_RETURN_URL = 'http://www.meiduo.site:8080/pay_success.html'
 APP_PRIVATE_KEY_PATH = os.path.join(BASE_DIR, 'apps/pay/key/app_private_key.pem')
 ALIPAY_PUBLIC_KEY_PATH = os.path.join(BASE_DIR, 'apps/pay/key/alipay_public_key.pem')
 
-"""######################DRF身份认证方案+jwt配置##################################"""
+"""######################DRF身份认证方案+jwt配置+drf_spectacular##################################"""
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+# drf_spectacular
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'meiduo API',
+    'DESCRIPTION': 'meiduo description',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'SWAGGER_UI_DIST': 'SIDECAR',  # shorthand to use the sidecar instead
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    'REDOC_DIST': 'SIDECAR',
+    # 自定义后端地址
+    'SERVERS': [
+        {'url': 'http://192.168.0.105:8000', 'description': '本地开发环境'},
+        {'url': 'https://api.example.com', 'description': '生产环境'},
+    ],
 }
 
 from datetime import timedelta

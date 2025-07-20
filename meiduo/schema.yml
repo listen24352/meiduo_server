@@ -1,0 +1,649 @@
+openapi: 3.0.3
+info:
+  title: meiduo API
+  version: 1.0.0
+  description: meiduo description
+paths:
+  /api/users/:
+    post:
+      operationId: api_users_create
+      description: 用户注册
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Register'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Register'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Register'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Register'
+          description: ''
+  /api/users/check_username/{username}/:
+    get:
+      operationId: api_users_check_username_retrieve
+      description: |-
+        detail=False：表示该动作不针对单个对象，而是针对整个视图集。
+        methods=['GET']：表示该动作只接受 GET 请求。
+        url_path  定义该动作的 URL 路径，其中 (?P<username>[^/.]+) 是一个正则表达式，用于捕获用户名参数。
+        url_name='check-username'：为该动作的 URL 定义一个名称，方便在代码中引用。
+
+        检查用户名是否存在
+      parameters:
+      - in: path
+        name: username
+        schema:
+          type: string
+          title: 用户名
+          description: 必填；长度为150个字符或以下；只能包含字母、数字、特殊字符“@”、“.”、“-”和“_”。
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Register'
+          description: ''
+  /meiduo_admin/authorizations/:
+    post:
+      operationId: meiduo_admin_authorizations_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - meiduo_admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Login'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Login'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Login'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Login'
+          description: ''
+  /meiduo_admin/skus/images/:
+    get:
+      operationId: meiduo_admin_skus_images_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: pagesize
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - meiduo_admin
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSKUImageModelList'
+          description: ''
+    post:
+      operationId: meiduo_admin_skus_images_create
+      tags:
+      - meiduo_admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SKUImageModel'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SKUImageModel'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SKUImageModel'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SKUImageModel'
+          description: ''
+  /meiduo_admin/skus/images/{id}/:
+    get:
+      operationId: meiduo_admin_skus_images_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this SKU图片.
+        required: true
+      tags:
+      - meiduo_admin
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SKUImageModel'
+          description: ''
+    put:
+      operationId: meiduo_admin_skus_images_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this SKU图片.
+        required: true
+      tags:
+      - meiduo_admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SKUImageModel'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SKUImageModel'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SKUImageModel'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SKUImageModel'
+          description: ''
+    patch:
+      operationId: meiduo_admin_skus_images_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this SKU图片.
+        required: true
+      tags:
+      - meiduo_admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSKUImageModel'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSKUImageModel'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSKUImageModel'
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SKUImageModel'
+          description: ''
+    delete:
+      operationId: meiduo_admin_skus_images_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this SKU图片.
+        required: true
+      tags:
+      - meiduo_admin
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /meiduo_admin/skus/simple/:
+    get:
+      operationId: meiduo_admin_skus_simple_list
+      tags:
+      - meiduo_admin
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ImageSKUModel'
+          description: ''
+  /meiduo_admin/statistical/day_active/:
+    get:
+      operationId: meiduo_admin_statistical_day_active_retrieve
+      description: 日活跃用户统计
+      tags:
+      - meiduo_admin
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /meiduo_admin/statistical/day_increment/:
+    get:
+      operationId: meiduo_admin_statistical_day_increment_retrieve
+      description: 新增用户
+      tags:
+      - meiduo_admin
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /meiduo_admin/statistical/day_orders/:
+    get:
+      operationId: meiduo_admin_statistical_day_orders_retrieve
+      description: 用户下单统计
+      tags:
+      - meiduo_admin
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /meiduo_admin/statistical/goods_day_views/:
+    get:
+      operationId: meiduo_admin_statistical_goods_day_views_retrieve
+      tags:
+      - meiduo_admin
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /meiduo_admin/statistical/month_increment/:
+    get:
+      operationId: meiduo_admin_statistical_month_increment_retrieve
+      description: 月增用户趋势图
+      tags:
+      - meiduo_admin
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /meiduo_admin/statistical/total_count/:
+    get:
+      operationId: meiduo_admin_statistical_total_count_retrieve
+      description: 总人数
+      tags:
+      - meiduo_admin
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /meiduo_admin/users/:
+    get:
+      operationId: meiduo_admin_users_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: pagesize
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      tags:
+      - meiduo_admin
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserModelList'
+          description: ''
+    post:
+      operationId: meiduo_admin_users_create
+      tags:
+      - meiduo_admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserModel'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserModel'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserModel'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserModel'
+          description: ''
+components:
+  schemas:
+    ImageSKUModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        create_time:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 创建时间
+        update_time:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 更新时间
+        name:
+          type: string
+          title: 名称
+          maxLength: 50
+        caption:
+          type: string
+          title: 副标题
+          maxLength: 100
+        price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          title: 单价
+        cost_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          title: 进价
+        market_price:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,8}(?:\.\d{0,2})?$
+          title: 市场价
+        stock:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: 库存
+        sales:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: 销量
+        comments:
+          type: integer
+          maximum: 2147483647
+          minimum: -2147483648
+          title: 评价数
+        is_launched:
+          type: boolean
+          title: 是否上架销售
+        default_image:
+          type: string
+          format: uri
+          nullable: true
+          title: 默认图片
+        spu:
+          type: integer
+          title: 商品
+        category:
+          type: integer
+          title: 从属类别
+      required:
+      - caption
+      - category
+      - cost_price
+      - create_time
+      - id
+      - market_price
+      - name
+      - price
+      - spu
+      - update_time
+    Login:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - password
+      - username
+    PaginatedSKUImageModelList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SKUImageModel'
+    PaginatedUserModelList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserModel'
+    PatchedSKUImageModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        create_time:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 创建时间
+        update_time:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 更新时间
+        image:
+          type: string
+          format: uri
+          title: 图片
+        sku:
+          type: integer
+    Register:
+      type: object
+      description: |-
+        用户注册序列化器
+        ModelSerializer  快速创建与模型相关的序列化器。
+
+        反序列化（网页 → 数据库）反序列化是把客户端发送的 JSON 数据转化为模型实例，然后保存到数据库中。
+        序列化（数据库 → 网页）序列化的过程是将数据库中的模型实例转化为 JSON 等格式，以便在 API 中返回。
+      properties:
+        username:
+          type: string
+          title: 用户名
+          description: 必填；长度为150个字符或以下；只能包含字母、数字、特殊字符“@”、“.”、“-”和“_”。
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        password:
+          type: string
+          writeOnly: true
+          title: 密码
+          maxLength: 128
+        password2:
+          type: string
+          writeOnly: true
+      required:
+      - password
+      - password2
+      - username
+    SKUImageModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        create_time:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 创建时间
+        update_time:
+          type: string
+          format: date-time
+          readOnly: true
+          title: 更新时间
+        image:
+          type: string
+          format: uri
+          title: 图片
+        sku:
+          type: integer
+      required:
+      - create_time
+      - id
+      - image
+      - sku
+      - update_time
+    UserModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          title: 用户名
+          description: 必填；长度为150个字符或以下；只能包含字母、数字、特殊字符“@”、“.”、“-”和“_”。
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        mobile:
+          type: string
+          nullable: true
+          maxLength: 11
+        email:
+          type: string
+          format: email
+          title: 电子邮件地址
+          maxLength: 254
+        password:
+          type: string
+          writeOnly: true
+          title: 密码
+          maxLength: 15
+          minLength: 5
+      required:
+      - id
+      - password
+      - username
+  securitySchemes:
+    jwtAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Token-based authentication with required prefix "JWT"
+servers:
+- url: http://192.168.0.105:8000
+  description: 本地开发环境
+- url: https://api.example.com
+  description: 生产环境
