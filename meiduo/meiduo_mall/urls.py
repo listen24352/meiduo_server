@@ -30,7 +30,7 @@ from rest_framework_simplejwt.views import (
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('apps.users.urls')),
+    path('api/', include('apps.users.urls')),
     # 验证码
     path('', include('apps.verifications.urls')),
     path('', include('apps.areas.urls')),
