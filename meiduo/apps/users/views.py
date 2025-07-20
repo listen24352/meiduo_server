@@ -15,53 +15,9 @@
 #
 # from apps.goods.models import SKU
 # from apps.users.models import User, Address
-# # from apps.users.serializers import RegisterSerializer
-# #
-# #
-# # class UsernameCountView(APIView):
-# #     """
-# #     获取指定用户名存在的数量
-# #     """
-# #
-# #     def get(self, request, username):
-# #         count = User.objects.filter(username=username).count()
-# #         data = {'code': 0, 'count': count, 'errmsg': 'ok'}
-# #         return Response(data)
-# #
-# #
-# # # class UsernameCountView(View):
-# # #     def get(self, request, username):
-# # #         count = User.objects.filter(username=username).count()
-# # #         return JsonResponse({'code': 0, 'count': count, 'errmsg': 'ok'})
-# #
-# #
-# # class RegisterView(APIView):
-# #     """
-# #     用户注册接口
-# #     """
-# #     permission_classes = [AllowAny]
-# #
-# #     def post(self, request):
-# #         serializer = RegisterSerializer(data=request.data)
-# #
-# #         # 验证数据
-# #         if serializer.is_valid():
-# #             # 创建用户（使用DRF）序列化器的save方法
-# #             user = serializer.save()
-# #             # 状态保持
-# #             login(request, user)
-# #             # 返回成功响应
-# #             return Response({
-# #                 'code': 0,
-# #                 'errmsg': 'ok',
-# #             }, status=status.HTTP_201_CREATED)
-# #         # 返回验证错误
-# #         return Response({
-# #             'code': 400,
-# #             'errmsg': '参数错误',
-# #             'errors': serializer.errors,
-# #         }, status=status.HTTP_400_BAD_REQUEST)
-#
+# from apps.users.serializers import RegisterSerializer
+
+
 #
 # class LoginView(View):
 #     def post(self, request):

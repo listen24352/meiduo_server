@@ -28,6 +28,7 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from apps.users.views.register_views import UserRegisterViewSet
+from apps.users.views.login_views import LoginView
 
 router = DefaultRouter()  # DRF 提供的自动路由生成器，可根据视图集自动生成 URL。
 router.register(r'users', UserRegisterViewSet, basename='user_register')  # 将视图集注册到路由中
@@ -41,5 +42,5 @@ urlpatterns = [
     # 用户名检查: /api/users/check_username/<username>/
     # 用户注册: /api/users/
     path('', include(router.urls)),
-
+    path('login/', LoginView.as_view(), name='user_login'),
 ]

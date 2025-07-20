@@ -4,6 +4,17 @@ info:
   version: 1.0.0
   description: meiduo description
 paths:
+  /api/login/:
+    post:
+      operationId: api_login_create
+      description: 用户登录API
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
   /api/users/:
     post:
       operationId: api_users_create
