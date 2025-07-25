@@ -25,7 +25,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     # 这是一个内部类，用于配置序列化器的元数据
     class Meta:
         model = User  # 指定该序列化器对应的模型为 User 模型
-        fields = ('username', 'password', 'password2')  # 指定序列化器包含的字段
+        fields = ('username', 'password', 'password2', 'mobile')  # 指定序列化器包含的字段
         # extra_kwargs 用于为特定字段提供额外的配置选项
         extra_kwargs = {
             'password': {'write_only': True},  # 设置为只写字段
@@ -38,6 +38,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         验证用户名格式
         value 参数：value 代表当前正在验证的字段的值
         """
+        print('value', value)
         if not re.match(r'^[a-zA-Z0-9_-]{5,20}$', value):
             raise serializers.ValidationError(
                 "用户名必须由5-20位字母、数字、下划线或连字符组成"
@@ -45,6 +46,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         # 检查用户名是否已存在
         if User.objects.filter(username=value).exists():
             raise serializers.ValidationError("用户名已存在")
+
         return value
 
     # def validate_email(self, value):
@@ -65,8 +67,8 @@ class RegisterSerializer(serializers.ModelSerializer):
         验证两次输入的密码是否一致
         attrs 参数：在序列化器的全局验证方法（如 validate）中，attrs 是一个字典，包含了所有经过字段级验证后的字段及其值。
         也就是说，attrs 是一个包含了所有有效字段数据的字典。
-
         """
+        print('attrs', attrs)
         if attrs['password'] != attrs['password2']:
             raise serializers.ValidationError(
                 {"password2": "两次输入的密码不一致"}
