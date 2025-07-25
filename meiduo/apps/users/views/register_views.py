@@ -4,6 +4,8 @@ status：包含 HTTP 状态码的常量，方便在响应中使用。
 permissions：用于设置视图的访问权限。
 mixins：提供了一些通用的视图行为，如创建、读取、更新和删除等。
 """
+from xmlrpc.client import Fault
+
 from rest_framework import viewsets, status, permissions, mixins
 from rest_framework.decorators import action  # 导入 action 装饰器，用于在视图集中定义自定义的动作。
 from rest_framework.response import Response  # 导入 Response 类，用于构建 RESTful 响应。
@@ -26,6 +28,7 @@ class UserRegisterViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     serializer_class = RegisterSerializer
     # 允许任何用户访问该视图集的接口
     permission_classes = [permissions.AllowAny]
+
     @extend_schema(responses=RegisterSerializer)
     @action(detail=False, methods=['GET'], url_path='check_username/(?P<username>[^/.]+)', url_name='check-username')
     def check_username(self, request, username=None):
@@ -41,6 +44,11 @@ class UserRegisterViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
             return Response({'code': 400, 'errmsg': '用户名不能为空'}, status=status.HTTP_400_BAD_REQUEST)
 
         count = User.objects.filter(username=username).count()
+        return Response({'code': 0, 'count': count, 'errmsg': 'ok'})
+
+    @action(detail=False, methods=['GET'], url_path='check_phone/(?P<mobile>[^/.]+)', url_name='check-mobile')
+    def check_phone(self, request, mobile=None):
+        count = User.objects.filter(mobile=mobile).count()
         return Response({'code': 0, 'count': count, 'errmsg': 'ok'})
 
     # 重写 CreateModelMixin 中的 create 方法，用于处理用户注册请求。
