@@ -2,7 +2,9 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from apps.users.views.register_views import UserRegisterViewSet
 from apps.users.views.login_views import LoginView
-from apps.users.views.views import LogoutView, CenterView, EmailView, EmailVerifyView, AddressCreateView, AddressView, \
+from apps.users.views.logout_views import LogoutView
+
+from apps.users.views.views import CenterView, EmailView, EmailVerifyView, AddressCreateView, AddressView, \
     UserHistoryView
 
 router = DefaultRouter()  # DRF 提供的自动路由生成器，可根据视图集自动生成 URL。
@@ -18,7 +20,7 @@ urlpatterns = [
     # 用户注册: /api/users/
     path('', include(router.urls)),
     path('login/', LoginView.as_view(), name='user_login'),
-    path('logout/', LogoutView.as_view()),
+    path('logout/', LogoutView.as_view(), name='logout'),
     # 用户中心
     path('info/', CenterView.as_view()),
     # 邮件保存
