@@ -22,6 +22,7 @@ class LoginView(APIView):
         # 获取验证后的数据
         validated_data = serializer.validated_data
         user = validated_data['user']
+        print(user.is_active)
         remembered = validated_data.get('remembered', False)
 
         # 登录用户

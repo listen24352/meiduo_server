@@ -119,7 +119,11 @@ DATABASES = {
         'PORT': 3306,  # 数据库端口
         'USER': 'leo',  # 数据库用户名
         'PASSWORD': 'mysql',  # 数据库用户密码
-        'NAME': 'meiduo'  # 数据库名字
+        'NAME': 'meiduo',  # 数据库名字
+        'TIME_ZONE': 'Asia/Shanghai'
+        # 'OPTIONS': {
+        #     'init_command': "SET time_zone='+8:00';",  # 强制 MySQL 使用特定时区
+        # }
     },
 }
 
@@ -304,10 +308,15 @@ APP_PRIVATE_KEY_PATH = os.path.join(BASE_DIR, 'apps/pay/key/app_private_key.pem'
 ALIPAY_PUBLIC_KEY_PATH = os.path.join(BASE_DIR, 'apps/pay/key/alipay_public_key.pem')
 
 """######################DRF身份认证方案+jwt配置+drf_spectacular##################################"""
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework_simplejwt.authentication.JWTAuthentication',
+#     ),
+#     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+# }
+
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
+    # 其他配置...
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 

@@ -29,11 +29,12 @@ from rest_framework_simplejwt.views import (
 )
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include('apps.users.urls')),
+    # path('admin/', admin.site.urls),
+    path('api/', include('apps.users.urls')),  # 用户
+    path('api/', include('apps.areas.urls')),  # 省市区
+
     # 验证码
     path('', include('apps.verifications.urls')),
-    path('', include('apps.areas.urls')),
     path('', include('apps.goods.urls')),
     path('', include('apps.carts.urls')),
     path('', include('apps.orders.urls')),  # 订单

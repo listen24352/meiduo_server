@@ -4,6 +4,36 @@ info:
   version: 1.0.0
   description: meiduo description
 paths:
+  /api/areas/:
+    get:
+      operationId: api_areas_retrieve
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/areas/{id}/:
+    get:
+      operationId: api_areas_retrieve_2
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
   /api/login/:
     post:
       operationId: api_login_create
@@ -11,7 +41,20 @@ paths:
       tags:
       - api
       security:
-      - jwtAuth: []
+      - cookieAuth: []
+      - basicAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/logout/:
+    post:
+      operationId: api_logout_create
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
       responses:
         '200':
           description: No response body
@@ -34,10 +77,38 @@ paths:
               $ref: '#/components/schemas/Register'
         required: true
       security:
-      - jwtAuth: []
+      - cookieAuth: []
+      - basicAuth: []
       - {}
       responses:
         '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Register'
+          description: ''
+  /api/users/check_phone/{mobile}/:
+    get:
+      operationId: api_users_check_phone_retrieve
+      description: |-
+        用户管理视图集
+        包含：用户名检查、用户注册
+        CreateModelMixin：提供了创建对象的功能
+        GenericViewSet：是一个通用的视图集基类
+      parameters:
+      - in: path
+        name: mobile
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - cookieAuth: []
+      - basicAuth: []
+      - {}
+      responses:
+        '200':
           content:
             application/json:
               schema:
@@ -64,7 +135,8 @@ paths:
       tags:
       - api
       security:
-      - jwtAuth: []
+      - cookieAuth: []
+      - basicAuth: []
       - {}
       responses:
         '200':
@@ -119,7 +191,8 @@ paths:
       tags:
       - meiduo_admin
       security:
-      - jwtAuth: []
+      - cookieAuth: []
+      - basicAuth: []
       - {}
       responses:
         '200':
@@ -145,7 +218,8 @@ paths:
               $ref: '#/components/schemas/SKUImageModel'
         required: true
       security:
-      - jwtAuth: []
+      - cookieAuth: []
+      - basicAuth: []
       - {}
       responses:
         '201':
@@ -167,7 +241,8 @@ paths:
       tags:
       - meiduo_admin
       security:
-      - jwtAuth: []
+      - cookieAuth: []
+      - basicAuth: []
       - {}
       responses:
         '200':
@@ -200,7 +275,8 @@ paths:
               $ref: '#/components/schemas/SKUImageModel'
         required: true
       security:
-      - jwtAuth: []
+      - cookieAuth: []
+      - basicAuth: []
       - {}
       responses:
         '200':
@@ -232,7 +308,8 @@ paths:
             schema:
               $ref: '#/components/schemas/PatchedSKUImageModel'
       security:
-      - jwtAuth: []
+      - cookieAuth: []
+      - basicAuth: []
       - {}
       responses:
         '200':
@@ -253,7 +330,8 @@ paths:
       tags:
       - meiduo_admin
       security:
-      - jwtAuth: []
+      - cookieAuth: []
+      - basicAuth: []
       - {}
       responses:
         '204':
@@ -264,7 +342,8 @@ paths:
       tags:
       - meiduo_admin
       security:
-      - jwtAuth: []
+      - cookieAuth: []
+      - basicAuth: []
       - {}
       responses:
         '200':
@@ -282,7 +361,8 @@ paths:
       tags:
       - meiduo_admin
       security:
-      - jwtAuth: []
+      - cookieAuth: []
+      - basicAuth: []
       - {}
       responses:
         '200':
@@ -294,7 +374,8 @@ paths:
       tags:
       - meiduo_admin
       security:
-      - jwtAuth: []
+      - cookieAuth: []
+      - basicAuth: []
       - {}
       responses:
         '200':
@@ -306,7 +387,8 @@ paths:
       tags:
       - meiduo_admin
       security:
-      - jwtAuth: []
+      - cookieAuth: []
+      - basicAuth: []
       - {}
       responses:
         '200':
@@ -317,7 +399,8 @@ paths:
       tags:
       - meiduo_admin
       security:
-      - jwtAuth: []
+      - cookieAuth: []
+      - basicAuth: []
       - {}
       responses:
         '200':
@@ -329,7 +412,8 @@ paths:
       tags:
       - meiduo_admin
       security:
-      - jwtAuth: []
+      - cookieAuth: []
+      - basicAuth: []
       - {}
       responses:
         '200':
@@ -341,7 +425,8 @@ paths:
       tags:
       - meiduo_admin
       security:
-      - jwtAuth: []
+      - cookieAuth: []
+      - basicAuth: []
       - {}
       responses:
         '200':
@@ -365,7 +450,8 @@ paths:
       tags:
       - meiduo_admin
       security:
-      - jwtAuth: []
+      - cookieAuth: []
+      - basicAuth: []
       - {}
       responses:
         '200':
@@ -391,7 +477,8 @@ paths:
               $ref: '#/components/schemas/UserModel'
         required: true
       security:
-      - jwtAuth: []
+      - cookieAuth: []
+      - basicAuth: []
       - {}
       responses:
         '201':
@@ -584,6 +671,10 @@ components:
         password2:
           type: string
           writeOnly: true
+        mobile:
+          type: string
+          nullable: true
+          maxLength: 11
       required:
       - password
       - password2
@@ -648,11 +739,13 @@ components:
       - password
       - username
   securitySchemes:
-    jwtAuth:
+    basicAuth:
+      type: http
+      scheme: basic
+    cookieAuth:
       type: apiKey
-      in: header
-      name: Authorization
-      description: Token-based authentication with required prefix "JWT"
+      in: cookie
+      name: sessionid
 servers:
 - url: http://192.168.0.105:8000
   description: 本地开发环境

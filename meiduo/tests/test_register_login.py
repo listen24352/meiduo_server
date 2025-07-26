@@ -2,6 +2,7 @@ import re
 import ddddocr
 
 from playwright.sync_api import sync_playwright, expect
+from utils import generate_phone_number, username
 
 
 def test_register_login():
@@ -11,8 +12,8 @@ def test_register_login():
         context = browser.new_context(no_viewport=True)
         page_register = context.new_page()
         # 数据
-        username = 'meiduo014'
-        cell_phone = '18866660007'
+        # username = 'meiduo015'
+        # cell_phone = '18866660007'
         pwd = 'meiduo001'
         # 注册
         page_register.goto("http://www.meiduo.site:8080")
@@ -20,7 +21,7 @@ def test_register_login():
         page_register.locator("#user_name").fill(username)
         page_register.locator("#pwd").fill(pwd)
         page_register.locator("#cpwd").fill(pwd)
-        page_register.locator("#phone").fill(cell_phone)
+        page_register.locator("#phone").fill(generate_phone_number())
         ocr = ddddocr.DdddOcr(show_ad=False)
         captcha_img = page_register.get_by_role("img", name="图形验证码")
         # 2. 截图保存

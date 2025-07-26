@@ -31,6 +31,7 @@ urlpatterns = [
     path('addresses/create/', AddressCreateView.as_view()),
     # 查询地址
     path('addresses/', AddressView.as_view()),
+    # path('addresses/<int>', AddressView.as_view()),
     # 浏览记录
     path('browse_histories/', UserHistoryView.as_view()),
 ]
