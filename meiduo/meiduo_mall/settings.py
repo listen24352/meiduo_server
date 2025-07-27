@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-*j-x0+x_y2c8^4pz66#iblzb4bimquq9f-2)pwo9(p*_64#5#j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['www.meiduo.site']
 
 # Application definition
 
@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_crontab',
     'rest_framework',
-    'rest_framework_simplejwt',
+    # 'rest_framework_simplejwt',
     'drf_spectacular',
     'drf_spectacular_sidecar',
     'apps.users',
@@ -255,16 +255,33 @@ LOGGING = {
 # 替换系统的User
 AUTH_USER_MODEL = 'users.User'
 
-CORS_ALLOWED_ORIGINS = [
-    # "http://www.meiduo.site:8000",  # 前端域名或端口
-    "http://www.meiduo.site:8080",  # 前端域名或端口
-    'http://192.168.0.105:60000'
-    # "http://127.0.0.1:8000"
+# CORS  白名单---同源策略
+# CORS_ALLOWED_ORIGINS = [
+#     # "http://www.meiduo.site:8000",  # 前端域名或端口
+#     "http://www.meiduo.site:8080",  # 前端域名或端口
+#     'http://192.168.0.105:60000'
+#     # "http://127.0.0.1:8000"
+# ]
+
+CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie
+CORS_ORIGIN_ALLOW_ALL = True  # 允许所有域名发送HTTP请求
+
+CORS_EXPOSE_HEADERS = [
+    'Set-Cookie',
+    'Access-Control-Allow-Origin',
 ]
 
-# CORS  白名单---同源策略
-CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie
-# CORS_ORIGIN_ALLOW_ALL = True  # 允许所有域名发送HTTP请求
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
 
 # 加载自定义文件存储类
 # 指定自定义的Django文件存储类
@@ -283,41 +300,40 @@ EMAIL_HOST_USER = 'zjx_py@163.com'
 EMAIL_HOST_PASSWORD = 'YTKCITCZFAPGJZAE'
 
 #########ES的配置#################
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-        'URL': 'http://192.168.0.101:9200/',
-        'INDEX_NAME': 'meiduo',
-    },
-}
-
-# 设置搜索 每页返回的记录条数
-HAYSTACK_SEARCH_RESULTS_PER_PAGE = 3
-
-# 定时任务
-CRONJOBS = [
-    ('*/1 * * * *', 'apps.contents.crons.generic_meiduo_index', '>> ' + os.path.join(BASE_DIR, 'logs/crontab.logs'))
-]
-
-# 支付宝配置
-ALIPAY_APPID = "9021000123607408"
-ALIPAY_DEBUG = True
-ALIPAY_URL = 'https://openapi.alipaydev.com/gateway.do'
-ALIPAY_RETURN_URL = 'http://www.meiduo.site:8080/pay_success.html'
-APP_PRIVATE_KEY_PATH = os.path.join(BASE_DIR, 'apps/pay/key/app_private_key.pem')
-ALIPAY_PUBLIC_KEY_PATH = os.path.join(BASE_DIR, 'apps/pay/key/alipay_public_key.pem')
-
-"""######################DRF身份认证方案+jwt配置+drf_spectacular##################################"""
-# REST_FRAMEWORK = {
-#     'DEFAULT_AUTHENTICATION_CLASSES': (
-#         'rest_framework_simplejwt.authentication.JWTAuthentication',
-#     ),
-#     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+# HAYSTACK_CONNECTIONS = {
+#     'default': {
+#         'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+#         'URL': 'http://192.168.0.101:9200/',
+#         'INDEX_NAME': 'meiduo',
+#     },
 # }
 
+# 设置搜索 每页返回的记录条数
+# HAYSTACK_SEARCH_RESULTS_PER_PAGE = 3
+
+# 定时任务
+# CRONJOBS = [
+#     ('*/1 * * * *', 'apps.contents.crons.generic_meiduo_index', '>> ' + os.path.join(BASE_DIR, 'logs/crontab.logs'))
+# ]
+
+# 支付宝配置
+# ALIPAY_APPID = "9021000123607408"
+# ALIPAY_DEBUG = True
+# ALIPAY_URL = 'https://openapi.alipaydev.com/gateway.do'
+# ALIPAY_RETURN_URL = 'http://www.meiduo.site:8080/pay_success.html'
+# APP_PRIVATE_KEY_PATH = os.path.join(BASE_DIR, 'apps/pay/key/app_private_key.pem')
+# ALIPAY_PUBLIC_KEY_PATH = os.path.join(BASE_DIR, 'apps/pay/key/alipay_public_key.pem')
+
+"""######################DRF身份认证方案+drf_spectacular##################################"""
 REST_FRAMEWORK = {
-    # 其他配置...
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.AllowAny',  # 允许所有请求（慎用）
+    ]
 }
 
 # drf_spectacular
@@ -334,20 +350,4 @@ SPECTACULAR_SETTINGS = {
         {'url': 'http://192.168.0.105:8000', 'description': '本地开发环境'},
         {'url': 'https://api.example.com', 'description': '生产环境'},
     ],
-}
-
-from datetime import timedelta
-
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(days=7),  # access_token时长
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=30),  # refresh_token时长，一般refresh_token>=2*access_token
-
-    # 设置header字段Authorization的值的Bearer： JWT+空格+accesstoken字符串，
-    # 例如】headers: { Authorization: 'JWT ' + token }
-    'AUTH_HEADER_TYPES': ('JWT',),
-    'ROTATE_REFRESH_TOKENS': True,  # 若为True，刷新后refresh_token有更新的有效时间
-    'BLACKLIST_AFTER_ROTATION': False,  # 若为Ture，刷新后的Token将添加至黑名单
-    'UPDATE_LAST_LOGIN': False,  # 若为Ture，更新user表中的last_login字段
-    "TOKEN_OBTAIN_SERIALIZER": "apps.meiduo_admin.user.MyTokenObtainPairSerializer",
-
 }

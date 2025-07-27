@@ -1,17 +1,21 @@
+from rest_framework.authentication import SessionAuthentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions
 
 from django.contrib.auth import login
 
 from apps.users.serializers.login_serializers import LoginSerializer
 from apps.carts.utils import merge_cookie_to_redis
+from django.views.decorators.csrf import csrf_exempt
 
 
 class LoginView(APIView):
     """用户登录API"""
-    permission_classes = []
-
+    authentication_classes = [SessionAuthentication]
+    permission_classes = [IsAuthenticated]
+    @csrf_exempt
     def post(self, request):
         # 实例化序列化器并验证数据
         serializer = LoginSerializer(data=request.data)

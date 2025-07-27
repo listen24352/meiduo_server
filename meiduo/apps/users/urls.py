@@ -3,12 +3,25 @@ from rest_framework.routers import DefaultRouter
 from apps.users.views.register_views import UserRegisterViewSet
 from apps.users.views.login_views import LoginView
 from apps.users.views.logout_views import LogoutView
-
-from apps.users.views.views import CenterView, EmailView, EmailVerifyView, AddressCreateView, AddressView, \
+from apps.users.views.address_views import AddressView
+from apps.users.views.views import CenterView, EmailView, EmailVerifyView, \
     UserHistoryView
 
 router = DefaultRouter()  # DRF 提供的自动路由生成器，可根据视图集自动生成 URL。
 router.register(r'users', UserRegisterViewSet, basename='user_register')  # 将视图集注册到路由中
+
+# router.register('addresses', AddressViewSet, basename='address')
+
+"""
+GET /addresses/ → 列表
+POST /addresses/ → 创建
+GET /addresses/{id}/ → 详情
+PUT /addresses/{id}/ → 更新
+PATCH /addresses/{id}/ → 部分更新
+DELETE /addresses/{id}/ → 删除（逻辑删除）
+
+"""
+
 """
 r'users'：URL 前缀，生成的 URL 会以 /users/ 开头。
 UserRegisterViewSet：绑定的视图集，处理该 URL 下的请求。
@@ -27,10 +40,17 @@ urlpatterns = [
     path('emails/', EmailView.as_view()),
     # 邮件验证
     path('emails/verification/', EmailVerifyView.as_view()),
-    # 新增地址
-    path('addresses/create/', AddressCreateView.as_view()),
-    # 查询地址
+
+    # 创建地址
+    # path('addresses/create/', AddressCreateView.as_view(), name='address-create'),
+
+    # 获取地址列表
     path('addresses/', AddressView.as_view()),
+
+    # 新增地址
+    # path('addresses/create/', AddressCreateView.as_view()),
+    # 查询地址
+    # path('addresses/', AddressView.as_view()),
     # path('addresses/<int>', AddressView.as_view()),
     # 浏览记录
     path('browse_histories/', UserHistoryView.as_view()),

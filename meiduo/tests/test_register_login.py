@@ -30,8 +30,12 @@ def test_register_login():
         result = ocr.classification(image)
         page_register.locator("#pic_code").fill(result)
         page_register.locator("#allow").click()
+
+        page_register.pause()
         page_register.get_by_role("button", name="注 册").click()
         page_register.wait_for_timeout(1000)
+
+
         # 登录
         page_register.get_by_role("link", name="登录").click()
         page_register.get_by_role("textbox", name="请输入用户名或手机号").fill(username)

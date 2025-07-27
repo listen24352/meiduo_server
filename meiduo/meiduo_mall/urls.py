@@ -18,15 +18,15 @@ from django.contrib import admin
 from django.urls import path, include
 
 # 注册路径转化器
-from utils.converters import UsernameConverter
-from django.urls import register_converter
+# from utils.converters import UsernameConverter
+# from django.urls import register_converter
 
-register_converter(UsernameConverter, 'username')
+# register_converter(UsernameConverter, 'username')
 
 # djangorestframework-simplejwt  项目配置
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView, TokenRefreshView, TokenVerifyView
-)
+# from rest_framework_simplejwt.views import (
+#     TokenObtainPairView, TokenRefreshView, TokenVerifyView
+# )
 
 urlpatterns = [
     # path('admin/', admin.site.urls),
@@ -39,7 +39,7 @@ urlpatterns = [
     path('', include('apps.carts.urls')),
     path('', include('apps.orders.urls')),  # 订单
     path('', include('apps.pay.urls')),  # 支付
-    path('meiduo_admin/', include('apps.meiduo_admin.urls')),
+    # path('meiduo_admin/', include('apps.meiduo_admin.urls')),
     # djangorestframework-simplejwt
     # path('meiduo_admin/authorizations/', TokenObtainPairView.as_view()),
     # path('api/token/refrensh/', TokenRefreshView.as_view()),
