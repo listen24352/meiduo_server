@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-*j-x0+x_y2c8^4pz66#iblzb4bimquq9f-2)pwo9(p*_64#5#j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['www.meiduo.site']
+ALLOWED_HOSTS = ['www.meiduo.site', '192.168.0.105']
 
 # Application definition
 
@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_crontab',
     'rest_framework',
-    # 'rest_framework_simplejwt',
+    'rest_framework_simplejwt',
     'drf_spectacular',
     'drf_spectacular_sidecar',
     'apps.users',
@@ -61,6 +61,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "utils.csrf_middleware.NotUseCsrfTokenMiddlewareMixin"
 ]
 
 ROOT_URLCONF = 'meiduo_mall.urls'
@@ -210,6 +211,12 @@ SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 # 使用名为"session"的Redis配置项存储session数据
 SESSION_CACHE_ALIAS = "session"
 
+# settings.py
+SESSION_COOKIE_AGE = 1209600  # 会话有效期（2周，单位：秒）
+SESSION_COOKIE_HTTPONLY = True  # 防止XSS攻击
+SESSION_COOKIE_SECURE = False  # 生产环境应设为True（仅HTTPS）
+SESSION_COOKIE_SAMESITE = 'Lax'  # 防止CSRF攻击，可选值：'Lax', 'Strict', None
+
 # 配置日志
 LOGGING = {
     'version': 1,
@@ -256,12 +263,10 @@ LOGGING = {
 AUTH_USER_MODEL = 'users.User'
 
 # CORS  白名单---同源策略
-# CORS_ALLOWED_ORIGINS = [
-#     # "http://www.meiduo.site:8000",  # 前端域名或端口
-#     "http://www.meiduo.site:8080",  # 前端域名或端口
-#     'http://192.168.0.105:60000'
-#     # "http://127.0.0.1:8000"
-# ]
+CSRF_TRUSTED_ORIGINS = [
+    'http://www.meiduo.site:8080',  # 添加你的前端域名
+    # 还可以添加其他可信域名
+]
 
 CORS_ALLOW_CREDENTIALS = True  # 允许携带cookie
 CORS_ORIGIN_ALLOW_ALL = True  # 允许所有域名发送HTTP请求
@@ -327,13 +332,12 @@ EMAIL_HOST_PASSWORD = 'YTKCITCZFAPGJZAE'
 """######################DRF身份认证方案+drf_spectacular##################################"""
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.BasicAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        # 'rest_framework.authentication.BasicAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
     ),
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.AllowAny',  # 允许所有请求（慎用）
-    ]
+
 }
 
 # drf_spectacular

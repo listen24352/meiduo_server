@@ -31,7 +31,7 @@ def test_register_login():
         page_register.locator("#pic_code").fill(result)
         page_register.locator("#allow").click()
 
-        page_register.pause()
+        # page_register.pause()
         page_register.get_by_role("button", name="注 册").click()
         page_register.wait_for_timeout(1000)
 

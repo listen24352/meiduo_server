@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from apps.users.views.register_views import UserRegisterViewSet
 from apps.users.views.login_views import LoginView
 from apps.users.views.logout_views import LogoutView
-from apps.users.views.address_views import AddressView
+from apps.users.views.address_views import AddressView,AddressCreateView
 from apps.users.views.views import CenterView, EmailView, EmailVerifyView, \
     UserHistoryView
 
@@ -42,7 +42,7 @@ urlpatterns = [
     path('emails/verification/', EmailVerifyView.as_view()),
 
     # 创建地址
-    # path('addresses/create/', AddressCreateView.as_view(), name='address-create'),
+    path('addresses/create/', AddressCreateView.as_view()),
 
     # 获取地址列表
     path('addresses/', AddressView.as_view()),

@@ -2,7 +2,8 @@ import re
 
 from rest_framework import serializers
 from django.contrib.auth import authenticate
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+from apps.users.models import User
 
 
 # 登录序列化器

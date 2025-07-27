@@ -1,4 +1,4 @@
-from rest_framework.authentication import SessionAuthentication
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -13,9 +13,9 @@ from django.views.decorators.csrf import csrf_exempt
 
 class LoginView(APIView):
     """用户登录API"""
-    authentication_classes = [SessionAuthentication]
-    permission_classes = [IsAuthenticated]
-    @csrf_exempt
+    # authentication_classes = [SessionAuthentication]
+    permission_classes = []
+
     def post(self, request):
         # 实例化序列化器并验证数据
         serializer = LoginSerializer(data=request.data)
